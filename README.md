@@ -1,13 +1,13 @@
-# 📸 StudioLens: Raw-to-Studio Portrait Pipeline
+# StudioLens: Raw-to-Studio Portrait Pipeline
 
 **StudioLens** is a computer vision pipeline that transforms raw, uncontrolled human portraits (mobile-captured, low-light, or blurry) into professional, studio-quality images. It simulates high-end lighting and depth-of-field while preserving original facial identity.
 
 ---
 
-## 🚀 1. Purpose
+## 1. Purpose
 The project automates the "retouching" process by fixing common photography issues like sensor noise, motion blur, and distracting backgrounds, outputting a polished portrait that looks like it was shot with a professional DSLR in a studio.
 
-## 🏗️ 2. Pipeline Architecture
+## 2. Pipeline Architecture
 The image flows through a sequential processing chain:
 1. **Denoise:** `fastNlMeans` removes sensor grain.
 2. **Lighting:** `CLAHE` (LAB space) balances uneven exposure.
@@ -16,18 +16,19 @@ The image flows through a sequential processing chain:
 5. **Studio Bokeh:** Feathered Gaussian Blur creates a smooth subject-background transition.
 6. **Final Polish:** Unsharp Masking adds micro-contrast.
 
-## 📂 3. File Directory
-├── main.py                # CLI entry point
-├── enhance.py             # Pipeline orchestrator
-├── utils.py               # Image & resizing helpers
+## 3. File Directory
+```text
+├── main.py                # CLI Entry point & Argument Parsing
+├── enhance.py             # Pipeline Orchestrator (Steps 1-6)
+├── utils.py               # Image conversion & Resizing helpers
 ├── pipeline/
-│   ├── deblur_denoise.py  # Pre-processing modules
-│   ├── face_restore.py    # AI Face reconstruction logic
-│   ├── segmentation.py    # Background removal & Bokeh blending
+│   ├── deblur_denoise.py  # Denoising & Blur Detection
+│   ├── face_restore.py    # MTCNN Detection + GFPGAN Restoration
+│   ├── segmentation.py    # U²-Net Segmentation + Feathered Blending
 └── weights/               # Local folder for model weights (GIT IGNORED)
+```
 
-## ✨ 4. Key Technical Features
----------------------------
+## 4. Key Technical Features
 
 *   **Models:** GFPGAN v1.4 (Facial Restoration), MTCNN (Face Detection), U²-Net (Salient Object Detection).
     
@@ -36,8 +37,7 @@ The image flows through a sequential processing chain:
 *   **Identity Preservation:** Uses alpha-blending logic to keep a balance between AI-restored pixels and original skin textures.
     
 
-## 🛠️ 5. Installation & Requirements
-----------------------------------
+## 5. Installation & Requirements
 
 **Note:** Model weights are ignored by Git. You must set them up locally.
 
@@ -50,22 +50,20 @@ The image flows through a sequential processing chain:
     *   Create a weights/ folder in the root directory and place the .pth file inside.
         
 
-## 🖥️ 6. How to Run
------------------
+## 6. How to Run
 
 Run the pipeline via terminal using the following command:
 
 codeBash
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   python main.py --input examples/input.jpg --output examples/output.jpg --face_restore_strength 0.35   `
+`   python main.py --input examples/input.jpg --output examples/output.jpg --face_restore_strength 0.35   `
 
 *   \--face\_restore\_strength: Adjust from 0.0 to 1.0 (0.35 is recommended for natural results).
     
 *   \--bokeh\_strength: Adjust the background blur radius.
     
 
-## ✅ 7. Successfully Implemented Tasks
------------------------------------
+## 7. Successfully Implemented Tasks
 
 *   **Motion Blur Removal:** Successfully reconstructs features smeared by camera movement.
     
