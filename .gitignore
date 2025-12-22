@@ -1,0 +1,6 @@
+**/*.pth
+**/weights/
+venv/
+__pycache__/
+*.jpg
+*.png
